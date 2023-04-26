@@ -1,0 +1,10 @@
+set -euo pipefail
+
+main() {
+    access_key_id=$(pass "aws/wiremock" | grep access_key_id | sed -r 's/^(.*: )(.*)/\2/g')
+    secret_access_key=$(pass "aws/wiremock" | grep secret_access_key | sed -r 's/^(.*: )(.*)/\2/g')
+
+    AWS_ACCESS_KEY_ID="$access_key_id" AWS_SECRET_ACCESS_KEY="$secret_access_key" "$@"
+}
+
+main "$@"
