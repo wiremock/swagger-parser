@@ -23,19 +23,29 @@ repositories {
 }
 
 group = 'io.swagger.parser.v3'
-version = '2.1.14-SNAPSHOT'
+version = '2.1.13.3'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+publishing {
+    repositories {
+        maven {
+            name = "wiremock-cloud-public"
+            url = "s3://wiremock-cloud-maven-public-repo/releases/"
+            credentials(AwsCredentials) {
+                accessKey = System.getenv("AWS_ACCESS_KEY_ID")
+                secretKey = System.getenv("AWS_SECRET_ACCESS_KEY")
+            }
+        }
+    }
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+        }
+    }
+}
 
 java {
     withSourcesJar()
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
 }
 
 tasks.withType(JavaCompile) {
@@ -44,4 +54,8 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
+}
+
+test {
+    jvmArgs '-Djdk.attach.allowAttachSelf=true'
 }
