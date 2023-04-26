@@ -55,10 +55,6 @@ public class SchemaTypeUtil {
         return createSchema(type, format);
     }
 
-    public static void updateReferenceForParentNode(Schema schema, String ref) {
-        schema.set$ref(ref);
-    }
-
     public static Schema createSchema(String type, String format) {
 
         if(INTEGER_TYPE.equals(type)) {
